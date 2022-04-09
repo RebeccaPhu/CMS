@@ -1,0 +1,39 @@
+<p>The main file for CMS is a text file describing the document. This file can have any extension, but .cms is typical.</p>
+<h1>Syntax</h1>
+<p>The CMS file has a number of directive 'verbs', one on each line. Blank lines and any line starting with &hash; are ignored, and any content from the &hash; character onwards in a line are ignored, as is any trailing whitespace preceding it.</p>
+<p>Verbs are followed by a colon then an identifier, called a noun. Some directives have no identifiers, so the text following the colon is the data, rather than noun. Where a directive takes noun and data, they are separated by a comma.</p>
+<p>The directives below use the following syntax:<blockquote>&lt;angle brackets&gt; denote something to be inserted, rather than a literal.<br>[square brackets] denote something optional.</blockquote></p>
+
+<h1>Directives</h1>
+<p>The following is a list of top level directives understood by CMS:</p>
+
+<h2>output:&lt;page file name&gt; <span class="required">Required</span></h2>
+<p>Defines the filename to output the HTML document to.</p>
+
+<h2>title:&lt;Manual Title&gt; <span class="required">Required</span></h2>
+<p>Defines the title of the whole Manual, which can be used in the manual itself as part of the page layout.</p>
+
+<h2>default:&lt;Default Page&gt; <span class="required">Required</span></h2>
+<p>Defines the page identifier of the page that will be shown when the manual is first loaded. If this page does not exist then a blank page will be shown on load.</p>
+
+<h2>js:&lt;JavaScript source File&gt; <span class="optional">Optional</span></h2>
+<p>Defines a source file containing JavaScript code that should be included. This directive may be used multiple times.</p>
+<p>JavaScript Source files are stored in the 'js' subdirectory.</p>
+
+<h2>css:&lt;CSS Source File&gt; <span class="optional">Optional</span></h2>
+<p>Defines a source file containing CSS definitions that should be included. This directive may be used multiple times.</p>
+<p>CSS source files are stored in the 'css' subdirectory.</p>
+
+<h2>header:&lt;HTML Source File&gt; <span class="required">Required</span></h2>
+<p>Defines the HTML that will appear before all the pages in the HTML sequence. Usually this defines part of the page layout.</p>
+
+<h2>footer:&lt;HTML File&gt; <span class="required">Required</span></h2>
+<p>Defines the HTML that will appear after all the pages in the HTML sequences. Usually this defines part of the page layout.</p>
+
+<h2>page:&lt;Page Identifier&gt;,&lt;Page Title&gt; <span class="optional">Optional</span></h2>
+<p>Defines a page to be included in the manual. The identifier is used to reference the page when navigating. The title will be applied to a {page:csshtml,page title container} while the page content will be included in a {page:csshtml,page content container}.</p>
+<p>Pages are stored in the 'pages' subdirectory and have a .htm extension, added to the page identifier. E.g. <pre>page:cms,CMS Introduction</pre> will look for pages/cms.htm</p>
+
+<h2>var:&lt;Variable Identifier&gt;,&lt;Variable Value&gt; <span class="optional">Optional</span></h2>
+<p>Defines a user-definable variable that can be used in any CSS or HTML page. CMS does not use the variable itself.</p>
+

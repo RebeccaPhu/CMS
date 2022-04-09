@@ -1,0 +1,46 @@
+#pagecontainer
+{
+	font-size: 10pt;
+}
+
+#pagecontainer a, #pagecontainer a:visited, #pagecontainer a:link, #pagecontainer a:hover
+{
+	text-decoration: none;
+	color: teal;
+	font-weight: bold;
+}
+
+#pagecontainer a:hover
+{
+	text-decoration: underline !important;
+}
+
+#pagecontainer h1
+{
+	font-size: 14pt;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+#pagecontainer h2
+{
+	font-size: 10pt;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#pagecontainer h2 .optional, #pagecontainer h2 .required
+{
+	font-weight: normal;
+	font-style: italic;
+}
+
+#pagecontainer h2 .optional
+{
+	color: DarkGreen;
+}
+
+#pagecontainer h2 .required
+{
+	color: DarkRed;
+}
