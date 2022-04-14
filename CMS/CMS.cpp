@@ -373,7 +373,7 @@ int ProcessCmd( FILE *output, std::string Cmd )
 		{
 			if ( iPage->LinkName == pg )
 			{
-				if ( desc != "" )
+				if ( data != "" )
 				{
 					fprintf( output, "<a href=\"javascript:do_page('%ls')\">%s</a>", iPage->LinkName.c_str(), data.c_str() );
 				}
