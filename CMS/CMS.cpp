@@ -11,6 +11,7 @@ typedef struct _PageDef
 {
 	std::wstring LinkName;
 	std::wstring LinkTitle;
+	int Level;
 } PageDef;
 
 std::map<std::wstring, std::wstring> CMSVars;
@@ -113,8 +114,16 @@ void ParseCMS( FILE *cms )
 		{
 			PageDef pg;
 
+			pg.Level     = 0;
 			pg.LinkName  = noun;
 			pg.LinkTitle = data;
+
+			while ( ( pg.LinkName.length() > 1 ) && ( pg.LinkName.substr( 0, 1 ) == L">" ) )
+			{
+				pg.Level++;
+
+				pg.LinkName = pg.LinkName.substr( 1 );
+			}
 
 			Pages.push_back( pg );
 		}
@@ -159,16 +168,141 @@ void DumpSummary()
 
 int OutputTOC( FILE *output )
 {
-	fprintf( output, "<ul>\n" );
+	int CLevel = -1;
 
 	for ( std::vector<PageDef>::iterator iPage = Pages.begin(); iPage != Pages.end(); iPage++ ) 
 	{
+		if ( iPage->Level > CLevel )
+		{
+			fprintf( output, "<ul>\n" );
+		}
+		else if ( iPage->Level < CLevel )
+		{
+			fprintf( output, "</ul>\n" );
+		}
+
+		CLevel = iPage->Level;
+
 		fprintf( output, "<li><a href=\"javascript:do_page('%ls')\">%ls</a></li>\n", iPage->LinkName.c_str(), iPage->LinkTitle.c_str() );
 	}
 
 	fprintf( output, "</ul>\n" );
 
 	return 0;
+}
+
+const std::string GenerateInlineImage( std::string ImageName )
+{
+	std::string out = "data:";
+
+	// First figure out the mime type.
+	size_t p = ImageName.find_last_of( "." );
+
+	if ( p == std::string::npos )
+	{
+		// Hell no.
+		return "";
+	}
+
+	if ( p > ( ImageName.length() - 2 ) )
+	{
+		// Nope.
+		return "";
+	}
+
+	std::string ext = ImageName.substr( p + 1 );
+	std::string extL = "";
+
+	// Lowercase this, lazily. Anything that doesn't work here, will be skipped
+	for ( std::string::iterator iC = ext.begin(); iC != ext.end(); iC++ )
+	{
+		extL.push_back( *iC | 0x20 );
+	}
+
+	// Output MIME type
+	if ( extL == "jpg" )
+	{
+		out += "image/jepg;";
+	}
+	else
+	{
+		out += "image/" + extL + ";";
+	}
+
+	out += "base64, ";
+
+	// Now the fun part.
+	FILE *ifile;
+
+	fopen_s( &ifile, std::string( "images/" + ImageName ).c_str(), "rb" );
+
+	if ( ifile == nullptr )
+	{
+		return "";
+	}
+
+	fseek( ifile, 0, SEEK_END );
+
+	long sz = ftell( ifile );
+
+	fseek ( ifile, 0, SEEK_SET );
+
+	unsigned char *buf = new unsigned char[ sz ];
+
+	fread( buf, 1, sz, ifile );
+
+	fclose( ifile );
+
+	const char *digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+	unsigned char octets[ 3 ];
+
+	long rp = sz;
+	long bp = 0;
+
+	while ( rp > 0 )
+	{
+		octets[ 0 ] = 0;
+		octets[ 1 ] = 0;
+		octets[ 2 ] = 0;
+
+		for ( int i=0; i < std::min<long>( 3, rp ); i++ )
+		{
+			octets[ i ] = buf[ bp + i ];
+		}
+
+		unsigned char b1 = std::min<unsigned char>( ( octets[ 0 ] & 0xFC ) >> 2, 63 );
+		unsigned char b2 = std::min<unsigned char>( ( ( octets[ 0 ] & 0x03 ) << 4 ) | ( ( octets[ 1 ] & 0xF0 ) >> 4 ), 63 );
+		unsigned char b3 = std::min<unsigned char>( ( ( octets[ 1 ] & 0x0F ) << 2 ) | ( ( octets[ 2 ] & 0xC0 ) >> 6 ), 63 );
+		unsigned char b4 = std::min<unsigned char>( octets[ 2 ] & 0x3F, 63 );
+
+		if ( rp > 2 )
+		{
+			out.push_back( digits[ b1 ] );
+			out.push_back( digits[ b2 ] );
+			out.push_back( digits[ b3 ] );
+			out.push_back( digits[ b4 ] );
+		}
+		else if ( rp > 1 )
+		{
+			out.push_back( digits[ b1 ] );
+			out.push_back( digits[ b2 ] );
+			out.push_back( digits[ b3 ] );
+			out.push_back( '=' );
+		}
+		else
+		{
+			out.push_back( digits[ b1 ] );
+			out.push_back( digits[ b2 ] );
+			out.push_back( '=' );
+			out.push_back( '=' );
+		}
+
+		bp += std::min<long>( 3, rp );
+		rp -= std::min<long>( 3, rp );
+	}
+
+	return out;
 }
 
 std::map<std::wstring, bool> CDocPath;
@@ -241,7 +375,7 @@ int ProcessCmd( FILE *output, std::string Cmd )
 			{
 				if ( desc != "" )
 				{
-					fprintf( output, "<a href=\"javascript:do_page('%ls')\">%s</a>", iPage->LinkName.c_str(), desc.c_str() );
+					fprintf( output, "<a href=\"javascript:do_page('%ls')\">%s</a>", iPage->LinkName.c_str(), data.c_str() );
 				}
 				else
 				{
@@ -258,6 +392,43 @@ int ProcessCmd( FILE *output, std::string Cmd )
 
 			return 1;
 		}
+	}
+	else if ( ( verb == "image" ) || ( verb == "figure" ) )
+	{
+		// If the first char is < or >, that's the alignment.
+		std::string divclass = "";
+
+		if ( ( noun.length() > 1 ) && ( noun.substr( 0, 1 ) == "<" ) )
+		{
+			divclass = "leftimage";
+
+			noun = noun.substr( 1 );
+		}
+		else if ( ( noun.length() > 1 ) && ( noun.substr( 0, 1 ) == ">" ) )
+		{
+			divclass = "rightimage";
+
+			noun = noun.substr( 1 );
+		}
+		else
+		{
+			divclass = "centerimage";
+		}
+
+		fprintf( output, "<div class=\"%s\">", divclass.c_str() );
+
+		fprintf( output, "<img src=\"%s\" alt=\"%s\">", GenerateInlineImage( noun ).c_str(), data.c_str() ); 
+
+		if ( verb == "figure" )
+		{
+			fprintf( output, "<br><span class=\"figuretext\">%s</span>", data.c_str() );
+		}
+
+		fprintf( output, "</div>" );
+	}
+	else if ( verb == "cssimage" )
+	{
+		fprintf( output, GenerateInlineImage( noun ).c_str() ); 
 	}
 
 	return 0;
