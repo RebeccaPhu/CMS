@@ -4,9 +4,13 @@ default:cms
 js:menu.js
 css:layout.css
 css:page.css
+css:toc.css
 header:header.htm
 footer:footer.htm
 page:cms,Introduction
-page:directives,Top Level Directives
-page:javascript,JavaScript Interface
-page:csshtml,CSS And HTML
+page:usage,Usage
+page:>directives,Top Level Directives
+page:>javascript,JavaScript Interface
+page:>csshtml,CSS And HTML
+page:>inline,In-Line Directives
+page:reuse,Re-using the HTML

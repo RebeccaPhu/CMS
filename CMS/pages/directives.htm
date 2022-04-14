@@ -31,7 +31,7 @@
 <p>Defines the HTML that will appear after all the pages in the HTML sequences. Usually this defines part of the page layout.</p>
 
 <h2>page:&lt;Page Identifier&gt;,&lt;Page Title&gt; <span class="optional">Optional</span></h2>
-<p>Defines a page to be included in the manual. The identifier is used to reference the page when navigating. The title will be applied to a {page:csshtml,page title container} while the page content will be included in a {page:csshtml,page content container}.</p>
+<p>Defines a page to be included in the manual. The identifier is used to reference the page when navigating. The title will be applied to a {page:csshtml,page title container} while the page content will be included in a {page:csshtml,page content container}. CMS will assume nesting if the page name is prefixed by a close-angle-bracket (&gt;). The number of brackets indicates the number of levels deep the page is in the table of contents.</p>
 <p>Pages are stored in the 'pages' subdirectory and have a .htm extension, added to the page identifier. E.g. <pre>page:cms,CMS Introduction</pre> will look for pages/cms.htm</p>
 
 <h2>var:&lt;Variable Identifier&gt;,&lt;Variable Value&gt; <span class="optional">Optional</span></h2>

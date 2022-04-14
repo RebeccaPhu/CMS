@@ -1,1 +1,9 @@
-<p>CMS expects</p>
+<p>CMS generates page links that call a JavaScript function to change the page. Since each 'page' is a DIV element shown and hidden at the appropriate time, there are no direct page links, only JavaScript function links.</p>
+<p>The function protoype is as follows:</p>
+<pre>
+function do_page( pg )
+&lbrace;
+
+&rbrace;
+</pre>
+<p>pg is the page identifier as defined in the {page:directives,top-level} cms file. This function should hide the current page DIV, and show the new one. It can of course, perform any other function as required by your manual design.</p>

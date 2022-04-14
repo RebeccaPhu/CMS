@@ -1,1 +1,25 @@
-blah
+<p>The HTML layout is free-form, with the {page:directives,header} and {page:directives,footer} HTML files defining the HTML that surrounds the main page content. There are however a couple of components that CMS expects in order for the manual to operate correctly.</p>
+<h1>HTML Element</h1>
+<p>There are two HTML elements that CMS expects to use. Note that these are not actually defined in the CMS program, so they can be altered to taste. If you change these, remember to update the do_page function in the supplied JavaScript code.</p>
+<h2>pagetitle DIV</h2>
+<p>This DIV element contains the page title, and will be updated when the page is changed.</p>
+<h2>pagecontent DIV</h2>
+<p>This DIV element contains the content for the page itself. Note that each page is a separate DIV within this DIV element, which are shown and hidden as required.</p>
+<h1>CSS Components</h1>
+<p>These classes are used by the CMS compiler when generating certain page elements, and cannot be changed (without changing the CMS source code).</p>
+<h2>TOC Structure</h2>
+The Table of Contents is defined as an unordered list (&lt;ul&gt;), with each page a list item &lt;li&gt;). Where a level change occurs in the page tree, the list item is followed by a new unordered list.</p>
+<h2>page-open</h2>
+<p>This class is used by page DIV elements that are currently being displayed. Only one should be active at a time. The distribution does not define this class; you can add extra definitions for open pages as required.</p>
+<h2>page-closed</h2>
+<p>This class is the companion to page-open and is used for pages hidden from view. The distribution defines this as display:none but you can add extra definitions for closed pages as required.</p>
+<h2>leftimage</h2>
+<p>This class is used for a DIV element containing an image that will be left-aligned with text flowing around to the right. You can change the CSS to alter this behaviour, but images that are specified as 'left-aligned' will use a DIV with the leftimage class.</p>
+<h2>rightimage</h2>
+<p>This class is used for a DIV element containing an image that will be right-aligned with text flowing around to the leftt. You can change the CSS to alter this behaviour, but images that are specified as 'right-aligned' will use a DIV with the rightimage class.</p>
+<h2>centerimage</h2>
+<p>This class is used for a DIV element containing an image that will be centered on the page. Text will not flow around the image. You can change the CSS to alter this behaviour, but images that are specified as "center-aligned" will use a DIV with the centerimage class.</p>
+<h2>figuretext</h2>
+<p>Defines a style for the text that appears under an image when the &lbrace;figure&rbrace; {page:inline,directive} is used. The text will be left-aligned relative to the image for left- and right-aligned images, and centered for center-aligned images.</p>
+
+

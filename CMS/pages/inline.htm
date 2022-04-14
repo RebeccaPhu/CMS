@@ -1,0 +1,26 @@
+<p>CMS allows the use of certain directives in page content to generate page links, insert images and other content. Directives are indicated by a closure, using &lbrace;braces&rbrace; for HTML, or `backticks` for CSS.</p>
+<p>For example, the following inserts the table of contents:</p>
+<pre>
+&lbrace;toc&rbrace;
+</pre>
+<p>The following directive verbs are available inline. The following syntax applies</p>
+<blockquote>Items in &lt;angle brackets&gt; denote an item to be inserted. Do not include the angle brackets.<br>Items in [square brackets] denote optional items.<br>A pipe (|) denotes one of several options can be used (only one should be used).</blockquote>
+<h2>title</h2>
+<p>Inserts the manual title, as defined by the title {page:directives,directive}.</p>
+<h2>defaulttitle</h2>
+<p>Inserts the title of the default page, as referenced by the default {page:directives,directive}.</p>
+<h2>toc</h2>
+<p>Inserts the Table of Contents as a series of nested unordered lists. See {page:csshtml} for more details.</p>
+<h2>include:&lt;page&gt;</h2>
+<p>Includes another page in this page. This is useful for including common page snippets. Recursion detection is implemented, so if a document is already being processed then any attempt to include the same document (rather of where the inclusion is taking place) will result in empty output at that point in the page. The noun part is a page in the 'pages' subdirectory with the 'htm' extension, in the same was as {page:directives,page} directives in the the top-level cms file.</p>
+<h2>page:&lt;page&gt;[,text for link]</h2>
+<p>Inserts a page link. A link will be automatically generated to call the JavaScript function to show the page. If optional text is specified then that text replaces the title of the page as defined in the {page:directives,top-level} cms file.</p>
+<h2>image:[&lt;|&gt;]&lt;filename,link description</h2>
+<p>Inserts an image. If the filename is preceeded with an angle bracket, then left-alignment (&lt;) or right-alignment (&gt;) will be applied. If neither is used, the image is centered.</p>
+<h2>figure:[&lt;|&gt;]&lt;filename,link description</h2>
+<p>This is similiar to the image verb, but adds 'figure' text underneath the image. This is useful for images that require their own descriptive text.</p>
+<h2>cssimage:&lt;filename&gt;</h2>
+<p>Inserts image data without any surrounding HTML. This is used for inserting image data into CSS definitions.</p>
+<h2>var:&lt;variable name&gt;</h2>
+<p>Inserts the value of a user variable, as defined in the {page:directives,top-level} cms file.</p>
+
