@@ -357,7 +357,11 @@ int ProcessCmd( FILE *output, std::string Cmd )
 
 		swprintf_s( bytes, noun.length() * 2, L"%S", noun.c_str() );
 
-		return OutputDoc( output, L"pages/" + std::wstring( bytes ) + L".htm", '{', '}' );
+		int i = OutputDoc( output, L"pages/" + std::wstring( bytes ) + L".htm", '{', '}' );
+
+		delete bytes;
+
+		return i;
 	}
 	else if ( verb == "page" )
 	{
@@ -385,6 +389,8 @@ int ProcessCmd( FILE *output, std::string Cmd )
 				break;
 			}
 		}
+
+		delete bytes;
 
 		if ( iPage == Pages.end() )
 		{
@@ -429,6 +435,19 @@ int ProcessCmd( FILE *output, std::string Cmd )
 	else if ( verb == "cssimage" )
 	{
 		fprintf( output, GenerateInlineImage( noun ).c_str() ); 
+	}
+	else if ( verb == "var" )
+	{
+		wchar_t *bytes = new wchar_t[ noun.length() * 2 ];
+
+		swprintf_s( bytes, noun.length() * 2, L"%S", noun.c_str() );
+
+		std::wstring WNoun = bytes;
+
+		if ( UserVars.find( WNoun ) != UserVars.end() )
+		{
+			fprintf( output, "%ls", UserVars[ WNoun ].c_str() );
+		}
 	}
 
 	return 0;
