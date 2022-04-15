@@ -172,9 +172,16 @@ int OutputTOC( FILE *output )
 
 	for ( std::vector<PageDef>::iterator iPage = Pages.begin(); iPage != Pages.end(); iPage++ ) 
 	{
+		std::string displayclass = " class=\"section-open\"";
+
+		if ( iPage->Level > 0 )
+		{
+			displayclass = " class=\"section-closed\"";
+		}
+
 		if ( iPage->Level > CLevel )
 		{
-			fprintf( output, "<ul>\n" );
+			fprintf( output, "<ul%s>\n", displayclass.c_str() );
 		}
 		else if ( iPage->Level < CLevel )
 		{
