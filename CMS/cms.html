@@ -235,10 +235,10 @@ function do_page( pg )
   <body>
 <div id="topheader">CMS - Compiled Manual Source</div>
 <div id="main">
-<div id="sidebar"><div id="sidebarspacer"><ul>
+<div id="sidebar"><div id="sidebarspacer"><ul class="section-open">
 <li><a href="javascript:do_page('cms')">Introduction</a></li>
 <li><a href="javascript:do_page('usage')">Usage</a></li>
-<ul>
+<ul class="section-closed">
 <li><a href="javascript:do_page('directives')">Top Level Directives</a></li>
 <li><a href="javascript:do_page('javascript')">JavaScript Interface</a></li>
 <li><a href="javascript:do_page('csshtml')">CSS And HTML</a></li>
@@ -328,6 +328,10 @@ The Table of Contents is defined as an unordered list (&lt;ul&gt;), with each pa
 <p>This class is used by page DIV elements that are currently being displayed. Only one should be active at a time. The distribution does not define this class; you can add extra definitions for open pages as required.</p>
 <h2>page-closed</h2>
 <p>This class is the companion to page-open and is used for pages hidden from view. The distribution defines this as display:none but you can add extra definitions for closed pages as required.</p>
+<h2>section-open</h2>
+<p>This class is used by the Table of Contents. Unordered lists (&lt;ul&gt;) at the top level are given this class by default. The default distribution does not use this class, but it is provided to allow complex manuals to expand and collapse trees as required.</p>
+<h2>section-closed</h2>
+<p>This class is used by the Table of Contents. Unordered lists (&lt;ul&gt;) below the top level are given this class by default. The default distribution does not use this class, but it is provided to allow complex manuals to expand and collapse trees as required. It is anticiapted this class would contain at least display:none;</p>
 <h2>leftimage</h2>
 <p>This class is used for a DIV element containing an image that will be left-aligned with text flowing around to the right. You can change the CSS to alter this behaviour, but images that are specified as 'left-aligned' will use a DIV with the leftimage class.</p>
 <h2>rightimage</h2>
@@ -336,8 +340,6 @@ The Table of Contents is defined as an unordered list (&lt;ul&gt;), with each pa
 <p>This class is used for a DIV element containing an image that will be centered on the page. Text will not flow around the image. You can change the CSS to alter this behaviour, but images that are specified as "center-aligned" will use a DIV with the centerimage class.</p>
 <h2>figuretext</h2>
 <p>Defines a style for the text that appears under an image when the &lbrace;figure&rbrace; <a href="javascript:do_page('inline')">directive</a> is used. The text will be left-aligned relative to the image for left- and right-aligned images, and centered for center-aligned images.</p>
-
-
 </div><div id="page_inline" class="page-closed"
 ><p>CMS allows the use of certain directives in page content to generate page links, insert images and other content. Directives are indicated by a closure, using &lbrace;braces&rbrace; for HTML, or `backticks` for CSS.</p>
 <p>For example, the following inserts the table of contents:</p>
@@ -356,9 +358,9 @@ The Table of Contents is defined as an unordered list (&lt;ul&gt;), with each pa
 <p>Includes another page in this page. This is useful for including common page snippets. Recursion detection is implemented, so if a document is already being processed then any attempt to include the same document (rather of where the inclusion is taking place) will result in empty output at that point in the page. The noun part is a page in the 'pages' subdirectory with the 'htm' extension, in the same was as <a href="javascript:do_page('directives')">page</a> directives in the the top-level cms file.</p>
 <h2>page:&lt;page&gt;[,text for link]</h2>
 <p>Inserts a page link. A link will be automatically generated to call the JavaScript function to show the page. If optional text is specified then that text replaces the title of the page as defined in the <a href="javascript:do_page('directives')">top-level</a> cms file.</p>
-<h2>image:[&lt;|&gt;]&lt;filename,link description</h2>
+<h2>image:[&lt;|&gt;]&lt;filename,link description&gt;</h2>
 <p>Inserts an image. If the filename is preceeded with an angle bracket, then left-alignment (&lt;) or right-alignment (&gt;) will be applied. If neither is used, the image is centered.</p>
-<h2>figure:[&lt;|&gt;]&lt;filename,link description</h2>
+<h2>figure:[&lt;|&gt;]&lt;filename,link description&gt;</h2>
 <p>This is similiar to the image verb, but adds 'figure' text underneath the image. This is useful for images that require their own descriptive text.</p>
 <h2>cssimage:&lt;filename&gt;</h2>
 <p>Inserts image data without any surrounding HTML. This is used for inserting image data into CSS definitions.</p>
