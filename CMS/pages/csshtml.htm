@@ -13,6 +13,10 @@ The Table of Contents is defined as an unordered list (&lt;ul&gt;), with each pa
 <p>This class is used by page DIV elements that are currently being displayed. Only one should be active at a time. The distribution does not define this class; you can add extra definitions for open pages as required.</p>
 <h2>page-closed</h2>
 <p>This class is the companion to page-open and is used for pages hidden from view. The distribution defines this as display:none but you can add extra definitions for closed pages as required.</p>
+<h2>section-open</h2>
+<p>This class is used by the Table of Contents. Unordered lists (&lt;ul&gt;) at the top level are given this class by default. The default distribution does not use this class, but it is provided to allow complex manuals to expand and collapse trees as required.</p>
+<h2>section-closed</h2>
+<p>This class is used by the Table of Contents. Unordered lists (&lt;ul&gt;) below the top level are given this class by default. The default distribution does not use this class, but it is provided to allow complex manuals to expand and collapse trees as required. It is anticiapted this class would contain at least display:none;</p>
 <h2>leftimage</h2>
 <p>This class is used for a DIV element containing an image that will be left-aligned with text flowing around to the right. You can change the CSS to alter this behaviour, but images that are specified as 'left-aligned' will use a DIV with the leftimage class.</p>
 <h2>rightimage</h2>
@@ -21,5 +25,3 @@ The Table of Contents is defined as an unordered list (&lt;ul&gt;), with each pa
 <p>This class is used for a DIV element containing an image that will be centered on the page. Text will not flow around the image. You can change the CSS to alter this behaviour, but images that are specified as "center-aligned" will use a DIV with the centerimage class.</p>
 <h2>figuretext</h2>
 <p>Defines a style for the text that appears under an image when the &lbrace;figure&rbrace; {page:inline,directive} is used. The text will be left-aligned relative to the image for left- and right-aligned images, and centered for center-aligned images.</p>
-
-
